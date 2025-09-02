@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');  
+            $table->string('name');
             $table->string('role');
-            $table->enum('type', ['image', 'video']);
-            $table->string('file_path');
+            $table->string('image'); // path to image
             $table->timestamps();
         });
     }

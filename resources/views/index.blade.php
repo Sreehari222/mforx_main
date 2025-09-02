@@ -49,7 +49,7 @@
         <div class="header-sticky">
             <nav class="navbar navbar-expand-lg">
                 <div class="container d-flex justify-content-between align-items-center w-100">
-                    <a class="navbar-brand" href="{{ route('index') }}">
+                    <a class="navbar-brand" href="{{route('index')}}">
                         <img src="images/logoforxnew.png" alt="Logo">
                     </a>
                     <div class="collapse navbar-collapse main-menu">
@@ -157,8 +157,7 @@
                                                                 Visit Website
                                                             </a>
                                                         @else
-                                                            <a href="{{ route('notfound') }}"
-                                                                class="readmore-btn premium-pro-btn"
+                                                            <a href="{{route('notfound')}}" class="readmore-btn premium-pro-btn"
                                                                 style="color: #35259f;">
                                                                 Visit Website
                                                             </a>
@@ -270,7 +269,6 @@
                     <div class="row">
                         @foreach ($welcomeVideos as $index => $video)
                             <div class="col-lg-4 col-md-6">
-                                <!-- Video Gallery start -->
                                 <div class="video-gallery-image wow fadeInUp" data-wow-delay="{{ $index * 0.2 }}s">
                                     <a href="{{ Str::startsWith($video->video_url, ['http://', 'https://'])
                                         ? $video->video_url
@@ -279,21 +277,18 @@
                                         <figure>
                                             <img src="{{ $video->thumbnail ? asset('storage/' . $video->thumbnail) : asset('images/default-thumbnail.jpg') }}"
                                                 alt="{{ $video->title }}">
-                                            <!-- Overlay appears on hover -->
-                                            <div class="video-overlay-info">
-                                                <h5>{{ $video->title }}</h5>
-                                                <span>{{ $video->position ? $video->position : '' }}</span>
-                                            </div>
                                         </figure>
+                                        <div class="video-overlay-info">
+                                            <h5>{{ $video->title }}</h5>
+                                            <span>{{ $video->position ? '' . $video->position : '' }}</span>
+                                        </div>
                                     </a>
                                 </div>
-                                <!-- Video Gallery end -->
                             </div>
                         @endforeach
                     </div>
                 </div>
             </div>
-
             <img src="{{ asset('images/flowfinal.png') }}"alt="Sabka World Ecosystem"
                 usemap="#flowmap"style="max-width: 100%; height: auto;">
             <map name="flowmap">
@@ -451,53 +446,37 @@
             </section>
             <!-- About Us Section End -->
 
+
             <!-- Gallery Section Start -->
+
+
             <div class="col-lg-12">
                 <div class="section-title section-title-center">
                     <h3 class="wow fadeInUp">Media and Events</h3>
                 </div>
             </div>
+
             <div class="page-gallery">
                 <div class="container">
                     <div class="row gallery-items page-gallery-box">
                         @foreach ($galleries as $index => $item)
-                            <div class="col-lg-4 col-6 mb-4">
-                                <div class="photo-gallery">
-                                    @if ($item->type === 'image')
-                                        <a href="{{ Storage::url($item->file_path) }}" data-cursor-text="View">
-                                            <figure class="media-box">
-                                                <img src="{{ Storage::url($item->file_path) }}"
-                                                    alt="{{ $item->name }}" loading="lazy">
-                                                <div class="overlay-text">
-                                                    <h4>{{ $item->name }}</h4>
-                                                    <p>{{ $item->role }}</p>
-                                                </div>
-                                            </figure>
-                                        </a>
-                                    @elseif ($item->type === 'video')
-                                        <a href="{{ Storage::url($item->file_path) }}" class="popup-video"
-                                            data-cursor-text="Play">
-                                            <figure class="media-box">
-                                                <video class="media-video" preload="metadata" controls>
-                                                    <source src="{{ Storage::url($item->file_path) }}"
-                                                        type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                                <div class="overlay-text">
-                                                    <h5>{{ $item->name }}</h5>
-                                                    <span>{{ $item->role }}</span>
-                                                </div>
-                                            </figure>
-                                        </a>
-                                    @endif
+                            <div class="col-lg-4 col-6">
+                                <div class="photo-gallery wow fadeInUp" data-wow-delay="{{ $index * 0.2 }}s">
+                                    <a href="{{ asset('storage/' . $item->image) }}" data-cursor-text="View">
+                                        <figure class="image-anime">
+                                            <img src="{{ asset('storage/' . $item->image) }}" alt="">
+                                            <div class="overlay-text">
+                                                <h4>{{ $item->name }}</h4>
+                                                <p>{{ $item->role }}</p>
+                                            </div>
+                                        </figure>
+                                    </a>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
             </div>
-
-
             <!-- Gallery Section End -->
         </div>
     </div>
@@ -828,17 +807,17 @@
         <p>Recruitment Partners</p>
 
         <div class="swiper">
-            <div class="swiper-wrapper">
-                @foreach ($partners as $partner)
-                    <div class="swiper-slide">
-                        <div class="company-logo">
-                            <img src="{{ asset('storage/' . $partner->logo) }}"
-                                alt="{{ $partner->name ?? 'Partner Logo' }}">
-                        </div>
-                    </div>
-                @endforeach
+    <div class="swiper-wrapper">
+        @foreach ($partners as $partner)
+            <div class="swiper-slide">
+                <div class="company-logo">
+                    <img src="{{ asset('storage/' . $partner->logo) }}"
+                         alt="{{ $partner->name ?? 'Partner Logo' }}">
+                </div>
             </div>
-        </div>
+        @endforeach
+    </div>
+</div>
 
     </div>
 

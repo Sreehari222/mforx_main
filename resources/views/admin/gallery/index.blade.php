@@ -6,11 +6,11 @@
         <div class="page-header">
             <div class="header-content">
                 <h2 class="page-title">Gallery Management</h2>
-                <p class="page-subtitle">Manage and organize your gallery media (images & videos)</p>
+                <p class="page-subtitle">Manage and organize your gallery images</p>
             </div>
             <a href="{{ route('admin.gallery.create') }}" class="add-btn">
                 <i class="fas fa-plus"></i>
-                <span>Add New Media</span>
+                <span>Add New Image</span>
             </a>
         </div>
 
@@ -18,11 +18,11 @@
         <div class="stats-row">
             <div class="stat-card">
                 <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                    <i class="fas fa-photo-video"></i>
+                    <i class="fas fa-image"></i>
                 </div>
                 <div class="stat-info">
                     <div class="stat-value">{{ count($galleries) }}</div>
-                    <div class="stat-label">Total Media</div>
+                    <div class="stat-label">Total Images</div>
                 </div>
             </div>
             <div class="stat-card">
@@ -50,7 +50,7 @@
             <div class="table-header">
                 <h3 class="table-title">
                     <i class="fas fa-list"></i>
-                    Media Gallery
+                    Image Gallery
                 </h3>
                 <div class="table-actions">
                     <div class="search-box">
@@ -72,8 +72,7 @@
                         <table class="gallery-table">
                             <thead>
                                 <tr>
-                                    <th>Preview</th>
-                                    <th>Type</th>
+                                    <th>Image</th>
                                     <th>Name</th>
                                     <th>Role</th>
                                     <th>Created At</th>
@@ -86,22 +85,12 @@
                                         data-role="{{ strtolower($gallery->role) }}">
                                         <td class="thumbnail-cell">
                                             <div class="thumbnail-wrapper">
-                                                @if ($gallery->type === 'image')
-                                                    <img src="{{ asset('storage/' . $gallery->file_path) }}"
-                                                        alt="{{ $gallery->name }}" class="gallery-thumbnail">
-                                                @elseif ($gallery->type === 'video')
-                                                    <video class="gallery-thumbnail" controls>
-                                                        <source src="{{ asset('storage/' . $gallery->file) }}" type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                @endif
+                                                <img src="{{ asset('storage/' . $gallery->image) }}"
+                                                    alt="{{ $gallery->name }}" class="gallery-thumbnail">
                                                 <div class="view-overlay">
                                                     <i class="fas fa-eye"></i>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td>
-                                            <span class="role-badge">{{ ucfirst($gallery->type) }}</span>
                                         </td>
                                         <td class="name-cell">
                                             <div class="gallery-name">{{ $gallery->name }}</div>
@@ -119,7 +108,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="button" class="action-btn delete-btn"
-                                                        title="Delete Media" onclick="confirmDelete({{ $gallery->id }})">
+                                                        title="Delete Image" onclick="confirmDelete({{ $gallery->id }})">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>
@@ -134,20 +123,20 @@
             @else
                 <div class="empty-state">
                     <div class="empty-icon">
-                        <i class="fas fa-photo-video"></i>
+                        <i class="fas fa-image"></i>
                     </div>
-                    <h3 class="empty-title">No Media Found</h3>
-                    <p class="empty-text">Start building your gallery by adding your first image or video.</p>
+                    <h3 class="empty-title">No Images Found</h3>
+                    <p class="empty-text">Start building your gallery by adding your first image.</p>
                     <a href="{{ route('admin.gallery.create') }}" class="empty-action-btn">
                         <i class="fas fa-plus"></i>
-                        Add Your First Media
+                        Add Your First Image
                     </a>
                 </div>
             @endif
         </div>
     </div>
 
-     <style>
+    <style>
         .gallery-management-container {
             color: white;
         }
@@ -576,9 +565,21 @@
 
         // Delete confirmation
         function confirmDelete(galleryId) {
-            if (confirm('Are you sure you want to delete this media? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to delete this image? This action cannot be undone.')) {
                 document.getElementById(`delete-form-${galleryId}`).submit();
             }
         }
+
+        // Add loading animation and error handling for thumbnails
+        document.querySelectorAll('.gallery-thumbnail').forEach(img => {
+            img.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+
+            img.addEventListener('error', function() {
+                this.src =
+                    'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="80" height="60" viewBox="0 0 80 60"><rect width="80" height="60" fill="%23f0f0f0"/><text x="40" y="35" text-anchor="middle" font-family="Arial" font-size="12" fill="%23999">No Image</text></svg>';
+            });
+        });
     </script>
 @endsection
